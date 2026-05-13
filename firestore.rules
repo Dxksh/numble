@@ -1,0 +1,21 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /lobbies/{lobbyId} {
+      // Any authenticated user can read lobbies
+      allow read: if request.auth != null;
+
+      // Only the host can create the lobby (hostUid must match their uid)
+      allow create: if request.auth != null
+        && request.resource.data.hostUid == request.auth.uid;
+
+      // Host or guest may update any field (MVP trade-off: no field-level restrictions)
+      allow update: if request.auth != null
+        && (resource.data.hostUid  == request.auth.uid
+         || resource.data.guestUid == request.auth.uid);
+
+      // No client-side deletes; lobbies expire via expiresAt field
+      allow delete: if false;
+    }
+  }
+}

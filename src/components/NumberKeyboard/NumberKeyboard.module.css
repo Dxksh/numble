@@ -1,0 +1,42 @@
+.keyboard {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  user-select: none;
+}
+
+.row {
+  display: flex;
+  gap: 6px;
+}
+
+.key {
+  min-width: 44px;
+  height: 58px;
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background-color: var(--key-bg);
+  color: var(--key-text);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.15s, transform 0.05s;
+}
+
+.key:active { transform: scale(0.94); }
+
+.pulsed { animation: keyPulse 0.15s ease; }
+
+.key[data-state="green"]  { background-color: var(--tile-green);  color: #fff; }
+.key[data-state="yellow"] { background-color: var(--tile-yellow); color: #fff; }
+.key[data-state="grey"]   { background-color: var(--tile-grey);   color: #fff; }
+
+.wide {
+  min-width: 64px;
+  font-size: 0.8rem;
+}

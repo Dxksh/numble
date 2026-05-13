@@ -1,0 +1,41 @@
+.player {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  min-width: 180px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.online  { background: #22c55e; }
+.offline { background: #ef4444; }
+
+.info { display: flex; flex-direction: column; gap: 2px; }
+
+.name {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.role {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.empty {
+  color: var(--text-muted);
+  font-style: italic;
+  font-size: 0.9rem;
+}

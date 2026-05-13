@@ -1,0 +1,113 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.wordmark {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  gap: 40px;
+  padding: 28px 40px;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.mySection {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+}
+
+.myLabel {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  align-self: flex-start;
+}
+
+.solvedBadge {
+  padding: 8px 16px;
+  background: var(--tile-green);
+  color: #fff;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.divider {
+  width: 1px;
+  align-self: stretch;
+  background: var(--border);
+  margin-top: 20px;
+}
+
+.oppSection {
+  padding-top: 20px;
+  min-width: 200px;
+}
+
+/* Mobile */
+.tabs {
+  display: none;
+  border-bottom: 1px solid var(--border);
+}
+
+.tab {
+  flex: 1;
+  padding: 12px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.tab.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+@media (max-width: 700px) {
+  .main {
+    flex-direction: column;
+    padding: 20px 16px;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .divider    { display: none; }
+  .oppSection { display: none; width: 100%; }
+  .oppSection.visible { display: block; }
+  .mySection.hidden   { display: none; }
+  .tabs       { display: flex; }
+}
