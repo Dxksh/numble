@@ -30,10 +30,10 @@ a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
 @keyframes tileFlip {
-  0%   { transform: rotateX(0deg); }
-  49%  { transform: rotateX(-90deg); }
-  50%  { transform: rotateX(-90deg); background-color: var(--flip-color); border-color: var(--flip-color); color: #fff; }
-  100% { transform: rotateX(0deg);  background-color: var(--flip-color); border-color: var(--flip-color); color: #fff; }
+  0%   { transform: rotateX(0deg);   background-color: var(--tile-empty-bg); border-color: var(--tile-border); color: var(--text-primary); }
+  49%  { transform: rotateX(-90deg); background-color: var(--tile-empty-bg); border-color: var(--tile-border); color: var(--text-primary); }
+  50%  { transform: rotateX(-90deg); background-color: var(--flip-color);    border-color: var(--flip-color);  color: #fff; }
+  100% { transform: rotateX(0deg);   background-color: var(--flip-color);    border-color: var(--flip-color);  color: #fff; }
 }
 
 @keyframes tilePop {

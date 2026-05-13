@@ -17,9 +17,7 @@ const FLIP_COLOR: Record<string, string> = {
 
 export function Tile({ digit, state, revealed = false, revealDelay = 0, small = false }: Props) {
   const isColoured = state === 'green' || state === 'yellow' || state === 'grey';
-  // When revealed, use 'flipped' so CSS color rules don't pre-apply before the animation runs.
-  // The animation sets the color via --flip-color with animation-fill-mode: forwards.
-  const displayState = revealed ? 'flipped' : (digit ? 'active' : 'empty');
+  const displayState = revealed ? state : (digit ? 'active' : 'empty');
 
   return (
     <div
