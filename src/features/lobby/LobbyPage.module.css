@@ -111,6 +111,36 @@
 .startBtn:active:not(:disabled) { transform: scale(0.98); }
 .startBtn:disabled               { opacity: 0.5; cursor: not-allowed; }
 
+.nameForm {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.nameLabel {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.nameInput {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.nameInput:focus {
+  border-color: var(--accent);
+}
+
 .error {
   display: flex;
   flex-direction: column;

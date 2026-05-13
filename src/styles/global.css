@@ -32,8 +32,8 @@ a:hover { text-decoration: underline; }
 @keyframes tileFlip {
   0%   { transform: rotateX(0deg); }
   49%  { transform: rotateX(-90deg); }
-  50%  { transform: rotateX(-90deg); background-color: var(--flip-color); border-color: var(--flip-color); }
-  100% { transform: rotateX(0deg);  background-color: var(--flip-color); border-color: var(--flip-color); }
+  50%  { transform: rotateX(-90deg); background-color: var(--flip-color); border-color: var(--flip-color); color: #fff; }
+  100% { transform: rotateX(0deg);  background-color: var(--flip-color); border-color: var(--flip-color); color: #fff; }
 }
 
 @keyframes tilePop {

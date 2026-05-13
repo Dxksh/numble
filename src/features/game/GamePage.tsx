@@ -27,6 +27,7 @@ export function GamePage({ lobby, role, lobbyId }: Props) {
   useKeyboard({ onDigit: addDigit, onBackspace: removeDigit, onEnter: submitGuess });
 
   const opponentName = role === 'host' ? lobby.guestName : lobby.hostName;
+  const myCode = role === 'host' ? lobby.hostCode : lobby.guestCode;
 
   return (
     <div className={styles.page}>
@@ -56,6 +57,11 @@ export function GamePage({ lobby, role, lobbyId }: Props) {
       <main className={styles.main}>
         <div className={`${styles.mySection} ${tab === 'opponent' ? styles.hidden : ''}`}>
           <div className={styles.myLabel}>Your board</div>
+          {myCode && (
+            <div className={styles.myCode}>
+              Your code: <span className={styles.myCodeValue}>{myCode}</span>
+            </div>
+          )}
           {isSolvedByMe && <div className={styles.solvedBadge}>Solved!</div>}
           <GameBoard
             guesses={myGuesses}

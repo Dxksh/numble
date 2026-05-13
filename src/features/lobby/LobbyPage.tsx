@@ -15,11 +15,13 @@ import styles from './LobbyPage.module.css';
 export function LobbyPage() {
   const { id: lobbyId = '' } = useParams();
   const { uid, loading: authLoading } = useAuth();
-  const { lobby, role, loading, error } = useLobby(lobbyId, uid);
+  const { lobby, role, loading, error, pendingGuest, joinAsGuest } = useLobby(lobbyId, uid);
   usePresence(lobbyId, role);
 
-  const [copied, setCopied]   = useState(false);
-  const [starting, setStarting] = useState(false);
+  const [copied, setCopied]         = useState(false);
+  const [starting, setStarting]     = useState(false);
+  const [guestName, setGuestName]   = useState(sessionStorage.getItem('numble_name') ?? '');
+  const [joining, setJoining]       = useState(false);
 
   if (authLoading || loading) return null;
 
@@ -32,11 +34,53 @@ export function LobbyPage() {
     );
   }
 
+  // Guest name entry screen
+  if (pendingGuest) {
+    async function handleJoin(e: React.FormEvent) {
+      e.preventDefault();
+      const name = guestName.trim() || 'Guest';
+      setJoining(true);
+      await joinAsGuest(name);
+      setJoining(false);
+    }
+    return (
+      <div className={styles.page}>
+        <header className={styles.header}>
+          <Link to="/" className={styles.wordmark}>Numble</Link>
+          <ThemeToggle />
+        </header>
+        <main className={styles.main}>
+          <div className={styles.card}>
+            <div className={styles.codeLabel} style={{ textAlign: 'center', marginBottom: 24 }}>
+              Joining lobby
+            </div>
+            <form onSubmit={handleJoin} className={styles.nameForm}>
+              <label className={styles.nameLabel} htmlFor="guestName">Your name</label>
+              <input
+                id="guestName"
+                className={styles.nameInput}
+                type="text"
+                maxLength={20}
+                placeholder="Enter your name"
+                value={guestName}
+                onChange={e => setGuestName(e.target.value)}
+                autoFocus
+              />
+              <button className={styles.startBtn} type="submit" disabled={joining}>
+                {joining ? 'Joining…' : 'Join Game'}
+              </button>
+            </form>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
   if (!lobby || !role) return null;
 
   if (lobby.phase === 'code-setting') return <CodeSetup lobby={lobby} role={role} lobbyId={lobbyId} />;
   if (lobby.phase === 'playing')      return <GamePage  lobby={lobby} role={role} lobbyId={lobbyId} />;
-  if (lobby.phase === 'finished')     return <GameOver  lobby={lobby} role={role} />;
+  if (lobby.phase === 'finished')     return <GameOver  lobby={lobby} role={role} lobbyId={lobbyId} />;
 
   // Phase: lobby
   const shareUrl = `${window.location.origin}/lobby/${lobbyId}`;

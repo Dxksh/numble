@@ -97,6 +97,26 @@ export async function finishGame(lobbyId: string, winner: Winner): Promise<void>
   });
 }
 
+export async function rematch(lobbyId: string): Promise<void> {
+  const now = Date.now();
+  await updateDoc(doc(db, 'lobbies', lobbyId), {
+    phase: 'lobby',
+    gameStarted: false,
+    gameOver: false,
+    winner: null,
+    hostReady: false,
+    guestReady: false,
+    hostCode: '',
+    guestCode: '',
+    hostGuesses: [],
+    guestGuesses: [],
+    hostSolvedAt: null,
+    guestSolvedAt: null,
+    updatedAt: now,
+    expiresAt: now + 24 * 60 * 60 * 1000,
+  });
+}
+
 export async function updateLastSeen(
   lobbyId: string, role: PlayerRole,
 ): Promise<void> {

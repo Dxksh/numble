@@ -6,12 +6,23 @@ import {
 import type { Lobby, PlayerRole } from '../../lib/types';
 
 export function useLobby(lobbyId: string, uid: string | null) {
-  const [lobby, setLobby]     = useState<Lobby | null>(null);
-  const [role, setRole]       = useState<PlayerRole | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError]     = useState<string | null>(null);
-  const transitioned          = useRef(false);
-  const finishing             = useRef(false);
+  const [lobby, setLobby]           = useState<Lobby | null>(null);
+  const [role, setRole]             = useState<PlayerRole | null>(null);
+  const [loading, setLoading]       = useState(true);
+  const [error, setError]           = useState<string | null>(null);
+  const [pendingGuest, setPendingGuest] = useState(false);
+  const transitioned                = useRef(false);
+  const finishing                   = useRef(false);
+
+  async function joinAsGuest(name: string) {
+    if (!uid) return;
+    sessionStorage.setItem('numble_name', name);
+    try {
+      await joinLobby(lobbyId, uid, name);
+    } catch {
+      setError('Failed to join lobby');
+    }
+  }
 
   useEffect(() => {
     if (!uid) return;
@@ -23,6 +34,12 @@ export function useLobby(lobbyId: string, uid: string | null) {
         return;
       }
 
+      // Reset game refs when a rematch brings phase back to lobby
+      if (data.phase === 'lobby') {
+        transitioned.current = false;
+        finishing.current = false;
+      }
+
       setLobby(data);
       setLoading(false);
 
@@ -31,14 +48,10 @@ export function useLobby(lobbyId: string, uid: string | null) {
         setRole('host');
       } else if (data.guestUid === uid) {
         setRole('guest');
+        setPendingGuest(false);
       } else if (!data.guestUid) {
-        // New visitor → join as guest
-        const name = sessionStorage.getItem('numble_name') ?? 'Guest';
-        try {
-          await joinLobby(lobbyId, uid, name);
-        } catch {
-          setError('Failed to join lobby');
-        }
+        // New visitor → show name entry form before joining
+        setPendingGuest(true);
         return;
       } else {
         setError('Lobby is full');
@@ -68,5 +81,5 @@ export function useLobby(lobbyId: string, uid: string | null) {
     return () => unsub();
   }, [lobbyId, uid]);
 
-  return { lobby, role, loading, error };
+  return { lobby, role, loading, error, pendingGuest, joinAsGuest };
 }

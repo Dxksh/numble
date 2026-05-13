@@ -1,19 +1,22 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import confetti from 'canvas-confetti';
 import { ThemeToggle } from '../../components/ThemeToggle/ThemeToggle';
 import { GameBoard } from '../../components/GameBoard/GameBoard';
+import { rematch } from '../../lib/lobbyUtils';
 import type { Lobby, PlayerRole } from '../../lib/types';
 import styles from './GameOver.module.css';
 
 interface Props {
   lobby: Lobby;
   role: PlayerRole;
+  lobbyId: string;
 }
 
-export function GameOver({ lobby, role }: Props) {
-  const navigate  = useNavigate();
-  const firedRef  = useRef(false);
+export function GameOver({ lobby, role, lobbyId }: Props) {
+  const navigate     = useNavigate();
+  const firedRef     = useRef(false);
+  const [rematching, setRematching] = useState(false);
 
   const iWon   = lobby.winner === role;
   const isDraw = lobby.winner === 'draw';
@@ -74,7 +77,17 @@ export function GameOver({ lobby, role }: Props) {
         </div>
 
         <div className={styles.actions}>
-          <button className={styles.btnPrimary} onClick={() => navigate('/')}>
+          <button
+            className={styles.btnPrimary}
+            onClick={async () => {
+              setRematching(true);
+              try { await rematch(lobbyId); } finally { setRematching(false); }
+            }}
+            disabled={rematching}
+          >
+            {rematching ? 'Setting up…' : 'Rematch'}
+          </button>
+          <button className={styles.btnSecondary} onClick={() => navigate('/')}>
             New Game
           </button>
         </div>

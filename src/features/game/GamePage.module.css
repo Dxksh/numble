@@ -52,6 +52,18 @@
   align-self: flex-start;
 }
 
+.myCode {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  align-self: flex-start;
+}
+
+.myCodeValue {
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+}
+
 .solvedBadge {
   padding: 8px 16px;
   background: var(--tile-green);
@@ -107,7 +119,7 @@
 
   .divider    { display: none; }
   .oppSection { display: none; width: 100%; }
-  .oppSection.visible { display: block; }
+  .oppSection.visible { display: flex; flex-direction: column; align-items: center; }
   .mySection.hidden   { display: none; }
   .tabs       { display: flex; }
 }

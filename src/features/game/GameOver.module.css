@@ -101,5 +101,21 @@
   transition: background 0.2s, transform 0.1s;
 }
 
-.btnPrimary:hover  { background: var(--accent-hover); }
-.btnPrimary:active { transform: scale(0.98); }
+.btnPrimary:hover:not(:disabled)  { background: var(--accent-hover); }
+.btnPrimary:active:not(:disabled) { transform: scale(0.98); }
+.btnPrimary:disabled               { opacity: 0.6; cursor: not-allowed; }
+
+.btnSecondary {
+  background: transparent;
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 14px 32px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, transform 0.1s;
+}
+
+.btnSecondary:hover  { border-color: var(--text-secondary); color: var(--text-primary); }
+.btnSecondary:active { transform: scale(0.98); }
