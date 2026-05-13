@@ -16,4 +16,4 @@ jobs:
       - name: Deploy Firestore rules
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-        run: npx firebase-tools deploy --only firestore:rules --token "$FIREBASE_TOKEN" --non-interactive
+        run: npx firebase-tools deploy --only firestore:rules --project numble-code-game --token "$FIREBASE_TOKEN" --non-interactive
