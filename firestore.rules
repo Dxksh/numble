@@ -9,10 +9,11 @@ service cloud.firestore {
       allow create: if request.auth != null
         && request.resource.data.hostUid == request.auth.uid;
 
-      // Host or guest may update any field (MVP trade-off: no field-level restrictions)
+      // Host or guest may update; also allow any authed user to join an empty lobby
       allow update: if request.auth != null
         && (resource.data.hostUid  == request.auth.uid
-         || resource.data.guestUid == request.auth.uid);
+         || resource.data.guestUid == request.auth.uid
+         || resource.data.guestUid == null);
 
       // No client-side deletes; lobbies expire via expiresAt field
       allow delete: if false;
