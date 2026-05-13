@@ -1,4 +1,4 @@
-// Auto-deployed via GitHub Actions
+// Auto-deployed via GitHub Actions — project: numble-code-game
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
