@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ThemeToggle } from '../../components/ThemeToggle/ThemeToggle';
 import { GameBoard } from '../../components/GameBoard/GameBoard';
 import { NumberKeyboard } from '../../components/NumberKeyboard/NumberKeyboard';
+import { LetterKeyboard } from '../../components/LetterKeyboard/LetterKeyboard';
 import { OpponentBoard } from './OpponentBoard';
 import { useGame } from './useGame';
 import { useKeyboard } from '../../hooks/useKeyboard';
@@ -18,13 +19,18 @@ interface Props {
 export function GamePage({ lobby, role, lobbyId }: Props) {
   const {
     currentGuess, myGuesses, opponentGuesses, keyboardStates,
-    canGuess, isSolvedByMe, isSolvedByOpponent, shakeRow,
-    addDigit, removeDigit, submitGuess,
+    canGuess, isSolvedByMe, isSolvedByOpponent, shakeRow, invalidGuess,
+    config, addChar, removeChar, submitGuess,
   } = useGame(lobby, role, lobbyId);
 
   const [tab, setTab] = useState<'mine' | 'opponent'>('mine');
 
-  useKeyboard({ onDigit: addDigit, onBackspace: removeDigit, onEnter: submitGuess });
+  useKeyboard({
+    onKey: addChar,
+    onBackspace: removeChar,
+    onEnter: submitGuess,
+    mode: config.keyboard,
+  });
 
   const opponentName = role === 'host' ? lobby.guestName : lobby.hostName;
   const myCode = role === 'host' ? lobby.hostCode : lobby.guestCode;
@@ -32,7 +38,7 @@ export function GamePage({ lobby, role, lobbyId }: Props) {
   return (
     <div className={styles.page}>
       <header className={styles.header}>
-        <Link to="/" className={styles.wordmark}>Numble</Link>
+        <Link to="/" className={styles.wordmark}>{config.label}</Link>
         <div className={styles.meta}>
           <span>{myGuesses.length}/6 guesses</span>
           <ThemeToggle />
@@ -59,22 +65,36 @@ export function GamePage({ lobby, role, lobbyId }: Props) {
           <div className={styles.myLabel}>Your board</div>
           {myCode && (
             <div className={styles.myCode}>
-              Your code: <span className={styles.myCodeValue}>{myCode}</span>
+              Your {config.codeLabel}:{' '}
+              <span className={styles.myCodeValue}>{config.displayCode(myCode)}</span>
             </div>
           )}
           {isSolvedByMe && <div className={styles.solvedBadge}>Solved!</div>}
+          {invalidGuess && config.invalidGuessMessage && (
+            <div className={styles.notWordBadge}>{config.invalidGuessMessage}</div>
+          )}
           <GameBoard
             guesses={myGuesses}
             currentGuess={canGuess ? currentGuess : ''}
             shakeRow={shakeRow}
           />
-          <NumberKeyboard
-            keyStates={keyboardStates}
-            onDigit={addDigit}
-            onBackspace={removeDigit}
-            onEnter={submitGuess}
-            disabled={!canGuess}
-          />
+          {config.keyboard === 'letters' ? (
+            <LetterKeyboard
+              keyStates={keyboardStates}
+              onLetter={addChar}
+              onBackspace={removeChar}
+              onEnter={submitGuess}
+              disabled={!canGuess}
+            />
+          ) : (
+            <NumberKeyboard
+              keyStates={keyboardStates}
+              onDigit={addChar}
+              onBackspace={removeChar}
+              onEnter={submitGuess}
+              disabled={!canGuess}
+            />
+          )}
         </div>
 
         <div className={styles.divider} />

@@ -1,21 +1,26 @@
 import { useEffect } from 'react';
 
 interface KeyboardHandlers {
-  onDigit: (d: string) => void;
+  onKey: (k: string) => void;
   onBackspace: () => void;
   onEnter: () => void;
+  mode?: 'digits' | 'letters';
 }
 
-export function useKeyboard({ onDigit, onBackspace, onEnter }: KeyboardHandlers) {
+export function useKeyboard({ onKey, onBackspace, onEnter, mode = 'digits' }: KeyboardHandlers) {
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (e.ctrlKey || e.metaKey || e.altKey) return;
       if (e.key === 'Enter')     { onEnter();    return; }
       if (e.key === 'Backspace') { onBackspace(); return; }
-      const digit = e.key.replace('Numpad', '');
-      if (/^[0-9]$/.test(digit)) onDigit(digit);
+      if (mode === 'digits') {
+        const digit = e.key.replace('Numpad', '');
+        if (/^[0-9]$/.test(digit)) onKey(digit);
+      } else {
+        if (/^[a-zA-Z]$/.test(e.key)) onKey(e.key.toLowerCase());
+      }
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
-  }, [onDigit, onBackspace, onEnter]);
+  }, [onKey, onBackspace, onEnter, mode]);
 }

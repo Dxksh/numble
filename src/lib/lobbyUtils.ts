@@ -4,7 +4,7 @@ import {
 import type { Unsubscribe } from 'firebase/firestore';
 import { db } from './firebase';
 import { determineWinner } from './gameLogic';
-import type { Lobby, PlayerRole, Winner, Guess } from './types';
+import type { Lobby, PlayerRole, Winner, Guess, GameMode } from './types';
 
 function generateId(): string {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -13,7 +13,7 @@ function generateId(): string {
   return id;
 }
 
-export async function createLobby(hostUid: string, hostName: string): Promise<string> {
+export async function createLobby(hostUid: string, hostName: string, gameMode: GameMode = 'numble'): Promise<string> {
   const id = generateId();
   const now = Date.now();
   const lobby: Lobby = {
@@ -26,6 +26,7 @@ export async function createLobby(hostUid: string, hostName: string): Promise<st
     createdAt: now, updatedAt: now,
     expiresAt: now + 24 * 60 * 60 * 1000,
     hostLastSeen: now, guestLastSeen: 0,
+    gameMode,
   };
   await setDoc(doc(db, 'lobbies', id), lobby);
   return id;

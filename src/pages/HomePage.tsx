@@ -3,27 +3,27 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { createLobby, getLobby } from '../lib/lobbyUtils';
 import { ThemeToggle } from '../components/ThemeToggle/ThemeToggle';
+import { GAME_MODE_LIST, type GameModeConfig } from '../lib/gameModes';
+import type { GameMode } from '../lib/types';
 import styles from './HomePage.module.css';
-
-const LOGO_COLORS = ['green','yellow','grey','green','yellow'] as const;
-const LOGO_LETTERS = ['N','U','M','B','L'];
 
 export function HomePage() {
   const { uid, loading } = useAuth();
   const navigate = useNavigate();
-  const [name, setName]       = useState(() => sessionStorage.getItem('numble_name') ?? '');
+  const [gameMode, setGameMode] = useState<GameMode | null>(null);
+  const [name, setName]         = useState(() => sessionStorage.getItem('numble_name') ?? '');
   const [joinCode, setJoinCode] = useState('');
   const [creating, setCreating] = useState(false);
   const [joining, setJoining]   = useState(false);
   const [error, setError]       = useState('');
 
   async function handleCreate() {
-    if (!uid) return;
+    if (!uid || !gameMode) return;
     if (!name.trim()) { setError('Enter your name first'); return; }
     setCreating(true);
     setError('');
     try {
-      const id = await createLobby(uid, name.trim());
+      const id = await createLobby(uid, name.trim(), gameMode);
       sessionStorage.setItem('numble_name', name.trim());
       navigate(`/lobby/${id}`);
     } catch {
@@ -53,20 +53,47 @@ export function HomePage() {
 
   if (loading) return null;
 
+  if (!gameMode) {
+    return (
+      <div className={styles.page}>
+        <div className={styles.topBar}><ThemeToggle /></div>
+
+        <div className={styles.hero}>
+          <h1 className={styles.siteTitle}>Duel</h1>
+          <p className={styles.tagline}>Pick a game to play with a friend</p>
+        </div>
+
+        <div className={styles.modePicker}>
+          {GAME_MODE_LIST.map(cfg => (
+            <ModeCard key={cfg.id} config={cfg} onSelect={() => setGameMode(cfg.id)} />
+          ))}
+        </div>
+
+        <footer className={styles.footer}>
+          <Link to="/privacy">Privacy Policy</Link>
+          <Link to="/terms">Terms of Use</Link>
+        </footer>
+      </div>
+    );
+  }
+
+  const config = GAME_MODE_LIST.find(c => c.id === gameMode)!;
+
   return (
     <div className={styles.page}>
       <div className={styles.topBar}><ThemeToggle /></div>
 
       <div className={styles.hero}>
         <div className={styles.logo}>
-          {LOGO_LETTERS.map((letter, i) => (
-            <div key={i} className={`${styles.logoTile} ${styles[LOGO_COLORS[i]]}`}>
-              {letter}
-            </div>
+          {config.logoTiles.map((t, i) => (
+            <div key={i} className={`${styles.logoTile} ${styles[t.color]}`}>{t.char}</div>
           ))}
         </div>
-        <h1 className={styles.title}>Numble</h1>
-        <p className={styles.tagline}>A number-guessing duel for two players</p>
+        <h1 className={styles.title}>{config.label}</h1>
+        <p className={styles.tagline}>{config.tagline}</p>
+        <button className={styles.backLink} onClick={() => { setGameMode(null); setError(''); }}>
+          ← Choose different game
+        </button>
       </div>
 
       <div className={styles.actions}>
@@ -111,5 +138,19 @@ export function HomePage() {
         <Link to="/terms">Terms of Use</Link>
       </footer>
     </div>
+  );
+}
+
+function ModeCard({ config, onSelect }: { config: GameModeConfig; onSelect: () => void }) {
+  return (
+    <button className={styles.modeCard} onClick={onSelect}>
+      <div className={styles.modeTiles}>
+        {config.logoTiles.map((t, i) => (
+          <div key={i} className={`${styles.modeTile} ${styles[t.color]}`}>{t.char}</div>
+        ))}
+      </div>
+      <div className={styles.modeName}>{config.label}</div>
+      <div className={styles.modeDesc}>{config.tagline}</div>
+    </button>
   );
 }

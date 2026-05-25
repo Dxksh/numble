@@ -2,6 +2,7 @@ export type TileState = 'green' | 'yellow' | 'grey' | 'empty' | 'active';
 export type Phase = 'lobby' | 'code-setting' | 'playing' | 'finished';
 export type PlayerRole = 'host' | 'guest';
 export type Winner = 'host' | 'guest' | 'draw' | null;
+export type GameMode = 'numble' | 'wordle';
 
 export interface Guess {
   guess: string;
@@ -31,4 +32,5 @@ export interface Lobby {
   expiresAt: number;
   hostLastSeen: number;
   guestLastSeen: number;
+  gameMode: GameMode;
 }

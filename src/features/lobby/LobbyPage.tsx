@@ -10,6 +10,7 @@ import { ThemeToggle } from '../../components/ThemeToggle/ThemeToggle';
 import { CodeSetup } from '../game/CodeSetup';
 import { GamePage } from '../game/GamePage';
 import { GameOver } from '../game/GameOver';
+import { getGameModeConfig } from '../../lib/gameModes';
 import styles from './LobbyPage.module.css';
 
 export function LobbyPage() {
@@ -22,6 +23,8 @@ export function LobbyPage() {
   const [starting, setStarting]     = useState(false);
   const [guestName, setGuestName]   = useState(sessionStorage.getItem('numble_name') ?? '');
   const [joining, setJoining]       = useState(false);
+
+  const modeLabel = getGameModeConfig(lobby?.gameMode).label;
 
   if (authLoading || loading) return null;
 
@@ -46,7 +49,7 @@ export function LobbyPage() {
     return (
       <div className={styles.page}>
         <header className={styles.header}>
-          <Link to="/" className={styles.wordmark}>Numble</Link>
+          <Link to="/" className={styles.wordmark}>{modeLabel}</Link>
           <ThemeToggle />
         </header>
         <main className={styles.main}>
@@ -103,7 +106,7 @@ export function LobbyPage() {
   return (
     <div className={styles.page}>
       <header className={styles.header}>
-        <Link to="/" className={styles.wordmark}>Numble</Link>
+        <Link to="/" className={styles.wordmark}>{modeLabel}</Link>
         <ThemeToggle />
       </header>
 

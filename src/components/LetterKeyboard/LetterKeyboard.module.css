@@ -1,0 +1,66 @@
+.keyboard {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+  user-select: none;
+  width: 100%;
+  max-width: 500px;
+}
+
+.row {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+}
+
+.key {
+  min-width: 34px;
+  height: 56px;
+  padding: 0 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background-color: var(--key-bg);
+  color: var(--key-text);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.15s, transform 0.05s;
+  flex: 1;
+  max-width: 44px;
+}
+
+.key:active { transform: scale(0.94); }
+
+.pulsed { animation: keyPulse 0.15s ease; }
+
+.key[data-state="green"]  { background-color: var(--tile-green);  color: #fff; }
+.key[data-state="yellow"] { background-color: var(--tile-yellow); color: #fff; }
+.key[data-state="grey"]   { background-color: var(--tile-grey);   color: #fff; }
+
+.wide {
+  min-width: 50px;
+  max-width: 56px;
+  font-size: 0.75rem;
+}
+
+@keyframes keyPulse {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(0.92); }
+  100% { transform: scale(1); }
+}
+
+@media (max-width: 400px) {
+  .key {
+    min-width: 28px;
+    height: 50px;
+    font-size: 0.8rem;
+  }
+  .wide {
+    min-width: 42px;
+    font-size: 0.7rem;
+  }
+}

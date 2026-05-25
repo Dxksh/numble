@@ -4,6 +4,7 @@ import confetti from 'canvas-confetti';
 import { ThemeToggle } from '../../components/ThemeToggle/ThemeToggle';
 import { GameBoard } from '../../components/GameBoard/GameBoard';
 import { rematch } from '../../lib/lobbyUtils';
+import { getGameModeConfig } from '../../lib/gameModes';
 import type { Lobby, PlayerRole } from '../../lib/types';
 import styles from './GameOver.module.css';
 
@@ -18,14 +19,15 @@ export function GameOver({ lobby, role, lobbyId }: Props) {
   const firedRef     = useRef(false);
   const [rematching, setRematching] = useState(false);
 
+  const config = getGameModeConfig(lobby.gameMode);
   const iWon   = lobby.winner === role;
   const isDraw = lobby.winner === 'draw';
 
   const myGuesses       = role === 'host' ? lobby.hostGuesses : lobby.guestGuesses;
   const opponentGuesses = role === 'host' ? lobby.guestGuesses : lobby.hostGuesses;
-  const myCode          = role === 'host' ? lobby.hostCode : lobby.guestCode;
-  const opponentCode    = role === 'host' ? lobby.guestCode : lobby.hostCode;
-  const opponentName    = role === 'host' ? lobby.guestName : lobby.hostName;
+  const myCode          = role === 'host' ? lobby.hostCode    : lobby.guestCode;
+  const opponentCode    = role === 'host' ? lobby.guestCode   : lobby.hostCode;
+  const opponentName    = role === 'host' ? lobby.guestName   : lobby.hostName;
 
   useEffect(() => {
     if (iWon && !firedRef.current) {
@@ -38,11 +40,12 @@ export function GameOver({ lobby, role, lobbyId }: Props) {
 
   const resultLabel = iWon ? 'You won! 🎉' : isDraw ? "It's a draw!" : 'You lost';
   const resultClass = iWon ? styles.win : isDraw ? styles.draw : styles.lose;
+  const codeLabel   = config.codeLabel.charAt(0).toUpperCase() + config.codeLabel.slice(1);
 
   return (
     <div className={styles.page}>
       <header className={styles.header}>
-        <Link to="/" className={styles.wordmark}>Numble</Link>
+        <Link to="/" className={styles.wordmark}>{config.label}</Link>
         <ThemeToggle />
       </header>
 
@@ -62,7 +65,8 @@ export function GameOver({ lobby, role, lobbyId }: Props) {
           <div className={styles.boardSection}>
             <div className={styles.boardLabel}>Your board</div>
             <div className={styles.codeReveal}>
-              Code to guess: <span className={styles.codeValue}>{opponentCode}</span>
+              {codeLabel} to guess:{' '}
+              <span className={styles.codeValue}>{config.displayCode(opponentCode)}</span>
             </div>
             <GameBoard guesses={myGuesses} />
           </div>
@@ -70,7 +74,8 @@ export function GameOver({ lobby, role, lobbyId }: Props) {
           <div className={styles.boardSection}>
             <div className={styles.boardLabel}>{opponentName ?? 'Opponent'}'s board</div>
             <div className={styles.codeReveal}>
-              Code to guess: <span className={styles.codeValue}>{myCode}</span>
+              {codeLabel} to guess:{' '}
+              <span className={styles.codeValue}>{config.displayCode(myCode)}</span>
             </div>
             <GameBoard guesses={opponentGuesses} />
           </div>

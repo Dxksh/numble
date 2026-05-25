@@ -11,6 +11,7 @@
   color: var(--text-primary);
   border-radius: 6px;
   user-select: none;
+  text-transform: uppercase;
   transform-style: preserve-3d;
   transition: border-color 0.05s;
 }
