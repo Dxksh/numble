@@ -59,7 +59,7 @@ export function HomePage() {
         <div className={styles.topBar}><ThemeToggle /></div>
 
         <div className={styles.hero}>
-          <h1 className={styles.siteTitle}>Duel</h1>
+          <h1 className={styles.siteTitle}>Duelle</h1>
           <p className={styles.tagline}>Pick a game to play with a friend</p>
         </div>
 

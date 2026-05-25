@@ -23,6 +23,7 @@ export function LobbyPage() {
   const [starting, setStarting]     = useState(false);
   const [guestName, setGuestName]   = useState(sessionStorage.getItem('duelle_name') ?? '');
   const [joining, setJoining]       = useState(false);
+  const [nameError, setNameError]   = useState('');
 
   const modeLabel = getGameModeConfig(lobby?.gameMode).label;
 
@@ -42,6 +43,11 @@ export function LobbyPage() {
     async function handleJoin(e: React.FormEvent) {
       e.preventDefault();
       const name = guestName.trim() || 'Guest';
+      if (lobby && name.toLowerCase() === lobby.hostName.toLowerCase()) {
+        setNameError('That name is already taken — choose a different one');
+        return;
+      }
+      setNameError('');
       setJoining(true);
       await joinAsGuest(name);
       setJoining(false);
@@ -66,9 +72,10 @@ export function LobbyPage() {
                 maxLength={20}
                 placeholder="Enter your name"
                 value={guestName}
-                onChange={e => setGuestName(e.target.value)}
+                onChange={e => { setGuestName(e.target.value); setNameError(''); }}
                 autoFocus
               />
+              {nameError && <p className={styles.error}>{nameError}</p>}
               <button className={styles.startBtn} type="submit" disabled={joining}>
                 {joining ? 'Joining…' : 'Join Game'}
               </button>

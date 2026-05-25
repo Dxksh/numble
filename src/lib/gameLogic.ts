@@ -64,6 +64,9 @@ export function determineWinner(
   if (guestSolvedAt !== null && hostSolvedAt === null) return 'guest';
   if (hostSolvedAt === null && guestSolvedAt === null) return 'draw';
 
+  // Both solved — fewer guesses wins; time only breaks a tie
+  if (hostGuessCount < guestGuessCount) return 'host';
+  if (guestGuessCount < hostGuessCount) return 'guest';
   if (hostSolvedAt! < guestSolvedAt!) return 'host';
   if (guestSolvedAt! < hostSolvedAt!) return 'guest';
   return 'draw';

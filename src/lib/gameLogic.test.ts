@@ -67,7 +67,11 @@ describe('determineWinner', () => {
   it('draw if neither solved', () => {
     expect(determineWinner(null, null, 6, 6)).toBe('draw');
   });
-  it('earlier solvedAt wins', () => {
+  it('fewer guesses wins regardless of time', () => {
+    expect(determineWinner(1000, 900, 3, 4)).toBe('host');
+    expect(determineWinner(900, 1000, 4, 3)).toBe('guest');
+  });
+  it('earlier solvedAt breaks a tie when guess counts are equal', () => {
     expect(determineWinner(900, 1000, 3, 3)).toBe('host');
     expect(determineWinner(1000, 900, 3, 3)).toBe('guest');
   });
