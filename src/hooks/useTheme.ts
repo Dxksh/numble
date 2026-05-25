@@ -4,12 +4,12 @@ type Theme = 'dark' | 'light';
 
 export function useTheme() {
   const [theme, setTheme] = useState<Theme>(() => {
-    return (localStorage.getItem('numble_theme') as Theme) ?? 'dark';
+    return (localStorage.getItem('duelle_theme') as Theme) ?? 'dark';
   });
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('numble_theme', theme);
+    localStorage.setItem('duelle_theme', theme);
   }, [theme]);
 
   const toggle = () => setTheme(t => (t === 'dark' ? 'light' : 'dark'));

@@ -11,7 +11,7 @@ export function HomePage() {
   const { uid, loading } = useAuth();
   const navigate = useNavigate();
   const [gameMode, setGameMode] = useState<GameMode | null>(null);
-  const [name, setName]         = useState(() => sessionStorage.getItem('numble_name') ?? '');
+  const [name, setName]         = useState(() => sessionStorage.getItem('duelle_name') ?? '');
   const [joinCode, setJoinCode] = useState('');
   const [creating, setCreating] = useState(false);
   const [joining, setJoining]   = useState(false);
@@ -24,7 +24,7 @@ export function HomePage() {
     setError('');
     try {
       const id = await createLobby(uid, name.trim(), gameMode);
-      sessionStorage.setItem('numble_name', name.trim());
+      sessionStorage.setItem('duelle_name', name.trim());
       navigate(`/lobby/${id}`);
     } catch {
       setError('Failed to create game. Try again.');
@@ -42,7 +42,7 @@ export function HomePage() {
       const lobby = await getLobby(code);
       if (!lobby) { setError('Lobby not found'); return; }
       if (lobby.guestUid && lobby.guestUid !== uid) { setError('Lobby is full'); return; }
-      sessionStorage.setItem('numble_name', name.trim() || 'Guest');
+      sessionStorage.setItem('duelle_name', name.trim() || 'Guest');
       navigate(`/lobby/${code}`);
     } catch {
       setError('Failed to join. Try again.');

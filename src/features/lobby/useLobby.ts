@@ -16,7 +16,7 @@ export function useLobby(lobbyId: string, uid: string | null) {
 
   async function joinAsGuest(name: string) {
     if (!uid) return;
-    sessionStorage.setItem('numble_name', name);
+    sessionStorage.setItem('duelle_name', name);
     try {
       await joinLobby(lobbyId, uid, name);
     } catch {

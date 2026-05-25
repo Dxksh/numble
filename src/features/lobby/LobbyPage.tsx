@@ -21,7 +21,7 @@ export function LobbyPage() {
 
   const [copied, setCopied]         = useState(false);
   const [starting, setStarting]     = useState(false);
-  const [guestName, setGuestName]   = useState(sessionStorage.getItem('numble_name') ?? '');
+  const [guestName, setGuestName]   = useState(sessionStorage.getItem('duelle_name') ?? '');
   const [joining, setJoining]       = useState(false);
 
   const modeLabel = getGameModeConfig(lobby?.gameMode).label;

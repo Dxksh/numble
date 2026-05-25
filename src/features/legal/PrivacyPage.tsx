@@ -6,7 +6,7 @@ export function PrivacyPage() {
   return (
     <div className={styles.page}>
       <header className={styles.header}>
-        <Link to="/" className={styles.wordmark}>Numble</Link>
+        <Link to="/" className={styles.wordmark}>Duelle</Link>
         <ThemeToggle />
       </header>
       <div className={styles.content}>
@@ -15,7 +15,7 @@ export function PrivacyPage() {
         <p className={styles.updated}>Last updated: May 2026</p>
 
         <h2>Overview</h2>
-        <p>Numble is a free browser-based multiplayer game. We collect the minimum data necessary to run the game. No account registration or email address is required.</p>
+        <p>Duelle is a free browser-based multiplayer game. We collect the minimum data necessary to run the game. No account registration or email address is required.</p>
 
         <h2>What We Collect</h2>
         <ul>
@@ -33,7 +33,7 @@ export function PrivacyPage() {
         </ul>
 
         <h2>Third-Party Services</h2>
-        <p>Numble uses <strong>Firebase</strong> (by Google) for anonymous authentication and real-time data storage. Firebase may process connection metadata in accordance with <a href="https://firebase.google.com/support/privacy" target="_blank" rel="noreferrer">Google's Privacy Policy</a>. No other third-party services are used.</p>
+        <p>Duelle uses <strong>Firebase</strong> (by Google) for anonymous authentication and real-time data storage. Firebase may process connection metadata in accordance with <a href="https://firebase.google.com/support/privacy" target="_blank" rel="noreferrer">Google's Privacy Policy</a>. No other third-party services are used.</p>
 
         <h2>Data Retention</h2>
         <p>Game lobby documents are automatically deleted 24 hours after creation. Player names stored in your browser's session storage are cleared when you close the tab. No long-term personal data is retained.</p>

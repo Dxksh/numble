@@ -7,7 +7,7 @@ export function useAuth() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const stored = sessionStorage.getItem('numble_uid');
+    const stored = sessionStorage.getItem('duelle_uid');
     if (stored) {
       setUid(stored);
       setLoading(false);
@@ -15,7 +15,7 @@ export function useAuth() {
     }
     signInAnonymously(auth)
       .then(cred => {
-        sessionStorage.setItem('numble_uid', cred.user.uid);
+        sessionStorage.setItem('duelle_uid', cred.user.uid);
         setUid(cred.user.uid);
       })
       .finally(() => setLoading(false));
