@@ -1,4 +1,4 @@
-# Duel
+# Duelle
 
 A real-time 2-player duel platform. Pick a game mode, set a secret answer for your opponent, then race to crack theirs first. Currently ships with two modes — and the architecture makes adding more a one-file change.
 
